@@ -2712,6 +2712,17 @@ int input_read_parameters_species(struct file_content * pfc,
     Omega_m_remaining-= pba->Omega0_ncdm_tot;
   }
 
+  /* 7) ** ADDITIONAL SPECIES ** --> Add your species here */
+  /* BEGIN MODIFICATION UG */
+  class_read_double("has_UG", pba->has_UG);
+  if(pba->has_UG==_TRUE_){
+    class_read_double("a_start",pba->a_start);
+    class_read_double("Delta_rho_Lambda",pba->Delta_rho_Lambda);
+    class_read_double("delta",pba->delta);
+
+
+    class_read_double("model", pba->model);}
+   
   /** 6) Omega_0_k (effective fractional density of curvature) */
   /* Read */
   class_read_double("Omega_k",pba->Omega0_k);
@@ -6229,7 +6240,17 @@ int input_default_params(struct background *pba,
   /** 1.i) Spectral distortions */
   pop->write_distortions = _FALSE_;
 
+ /* BEGIN MODIFICATION UG 
+  if (pba->has_UG == 1){
+   if (pba->a_start == 0. || pba->delta == 0. || pba->Delta_rho_Lambda == 0. ){
+     pba->delta=0.22;
+     pba->a_start=0.8;
+     pba->Delta_rho_Lambda= -0.0003;
+     pba->model= 1;}}
 
+   END MODIFICATION UG */
+
+   
   /** 2) Verbosity */
   pba->background_verbose = 0;
   pth->thermodynamics_verbose = 0;
